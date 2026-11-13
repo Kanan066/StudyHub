@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyHub — Personal Student Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">SH</span>
+      <div class="brand-text">
+        <span class="brand-title">StudyHub</span>
+        <span class="brand-sub">personal workspace</span>
+      </div>
+    </div>
+<button id="themeToggle" type="button">
+    🌙 Dark Mode
+</button>
+    <nav class="nav" id="nav">
+      <button class="nav-item is-active" data-view="dashboard">
+        <span class="nav-icon">◆</span> Dashboard
+      </button>
+      <button class="nav-item" data-view="notes">
+        <span class="nav-icon">✎</span> Notes
+      </button>
+      <button class="nav-item" data-view="planner">
+        <span class="nav-icon">▤</span> Planner
+      </button>
+      <button class="nav-item" data-view="flashcards">
+        <span class="nav-icon">▢</span> Flashcards
+      </button>
+      <button class="nav-item" data-view="subjects">
+        <span class="nav-icon">●</span> Subjects
+      </button>
+    </nav>
+
+    <div class="timer-widget">
+      <div class="timer-label">Focus Timer</div>
+      <div class="timer-clock" id="timerClock">25:00</div>
+      <div class="timer-subject">
+        <select id="timerSubjectSelect" class="mini-select"></select>
+      </div>
+      <div class="timer-controls">
+        <button id="timerStartBtn" class="timer-btn timer-btn-primary">Start</button>
+        <button id="timerResetBtn" class="timer-btn">Reset</button>
+      </div>
+      <div class="timer-presets">
+        <button class="preset-chip" data-mins="25">25</button>
+        <button class="preset-chip" data-mins="45">45</button>
+        <button class="preset-chip" data-mins="50">50</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="content">
+
+    <!-- DASHBOARD -->
+    <section id="view-dashboard" class="view is-active">
+      <header class="view-header">
+        <div>
+          <p class="eyebrow">Today</p>
+          <h1 class="view-title" id="dashGreeting">Welcome back</h1>
+        </div>
+      </header>
+
+      <div class="stat-grid">
+        <div class="stat-card" style="--stat-color:var(--tab-1)">
+          <span class="stat-num" id="statMinutes">0</span>
+          <span class="stat-label">Minutes studied today</span>
+        </div>
+        <div class="stat-card" style="--stat-color:var(--tab-3)">
+          <span class="stat-num" id="statStreak">0</span>
+          <span class="stat-label">Day streak</span>
+        </div>
+        <div class="stat-card" style="--stat-color:var(--tab-4)">
+          <span class="stat-num" id="statTasks">0/0</span>
+          <span class="stat-label">Tasks done today</span>
+        </div>
+        <div class="stat-card" style="--stat-color:var(--tab-5)">
+          <span class="stat-num" id="statCards">0</span>
+          <span class="stat-label">Flashcards reviewed</span>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Study time — last 7 days</h2>
+            <span class="panel-note" id="weekTotalNote">0 min total</span>
+          </div>
+          <div class="bar-chart" id="weekChart"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Time by subject</h2>
+          </div>
+          <div class="subject-bars" id="subjectBars"></div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Up next</h2>
+            <button class="link-btn" data-goto="planner">Open planner →</button>
+          </div>
+          <ul class="mini-list" id="upNextList"></ul>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Recent notes</h2>
+            <button class="link-btn" data-goto="notes">Open notes →</button>
+          </div>
+          <ul class="mini-list" id="recentNotesList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTES -->
+    <section id="view-notes" class="view">
+      <header class="view-header">
+        <div>
+          <p class="eyebrow">Workspace</p>
+          <h1 class="view-title">Notes</h1>
+        </div>
+        <button class="btn btn-primary" id="newNoteBtn">+ New note</button>
+      </header>
+
+      <div class="tab-strip" id="notesSubjectTabs"></div>
+
+      <div class="toolbar">
+        <input type="search" id="notesSearch" class="search-input" placeholder="Search notes…">
+      </div>
+
+      <div class="card-grid" id="notesGrid"></div>
+      <p class="empty-state" id="notesEmpty" hidden>No notes yet. Start a new note to capture what you're learning.</p>
+    </section>
+
+    <!-- PLANNER -->
+    <section id="view-planner" class="view">
+      <header class="view-header">
+        <div>
+          <p class="eyebrow">Schedule</p>
+          <h1 class="view-title">Planner</h1>
+        </div>
+        <button class="btn btn-primary" id="newTaskBtn">+ New task</button>
+      </header>
+
+      <div class="tab-strip" id="plannerSubjectTabs"></div>
+
+      <div class="planner-columns" id="plannerColumns"></div>
+      <p class="empty-state" id="plannerEmpty" hidden>Nothing planned. Add a task to build your schedule.</p>
+    </section>
+
+    <!-- FLASHCARDS -->
+    <section id="view-flashcards" class="view">
+      <header class="view-header">
+        <div>
+          <p class="eyebrow">Practice</p>
+          <h1 class="view-title">Flashcards</h1>
+        </div>
+        <button class="btn btn-primary" id="newCardBtn">+ New card</button>
+      </header>
+
+      <div class="tab-strip" id="cardsSubjectTabs"></div>
+
+      <div class="flash-layout">
+        <div class="flash-stage panel" id="flashStage">
+          <div class="flash-empty" id="flashEmpty">
+            <p>No cards in this deck yet.</p>
+            <span>Add flashcards below to start a study session.</span>
+          </div>
+          <div class="flash-session" id="flashSession" hidden>
+            <div class="flash-progress" id="flashProgress"></div>
+            <div class="flashcard" id="flashcard">
+              <div class="flashcard-inner" id="flashcardInner">
+                <div class="flashcard-face flashcard-front" id="flashFront"></div>
+                <div class="flashcard-face flashcard-back" id="flashBack"></div>
+              </div>
+            </div>
+            <p class="flash-hint">Click the card to flip</p>
+            <div class="flash-grade" id="flashGrade" hidden>
+              <button class="grade-btn grade-again" data-grade="again">Again</button>
+              <button class="grade-btn grade-good" data-grade="good">Good</button>
+              <button class="grade-btn grade-easy" data-grade="easy">Easy</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>All cards in view</h2>
+          </div>
+          <ul class="card-list" id="cardList"></ul>
+          <p class="empty-state" id="cardListEmpty" hidden>No flashcards to show yet.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUBJECTS -->
+    <section id="view-subjects" class="view">
+      <header class="view-header">
+        <div>
+          <p class="eyebrow">Organize</p>
+          <h1 class="view-title">Subjects</h1>
+        </div>
+        <button class="btn btn-primary" id="newSubjectBtn">+ New subject</button>
+      </header>
+
+      <div class="subject-grid" id="subjectGrid"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ MODAL ROOT ============ -->
+<div class="modal-overlay" id="modalOverlay" hidden>
+  <div class="modal" id="modal"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+<script src="theme.js"></script>
+</body>
+</html>i
