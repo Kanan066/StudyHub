@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard - StudyHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app.css">
+  <script>document.documentElement.dataset.theme = localStorage.getItem("studyhub-theme") || "light";</script>
+</head>
+<body class="shell">
+  <aside class="side">
+    <a href="index.html" class="logo">StudyHub</a>
+    <a href="#overview" data-view="overview"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg><span>Overview</span></a>
+    <a href="#tasks" data-view="tasks"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h9"/></svg><span>Tasks</span></a>
+    <a href="#focus" data-view="focus"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Focus</span></a>
+    <a href="#notes" data-view="notes"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6zM9 12h7M9 16h7"/></svg><span>Notes</span></a>
+    <a href="#reports" data-view="reports"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg><span>Reports</span></a>
+    <a href="#settings" data-view="settings"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Settings</span></a>
+    <div class="grow"></div>
+    <div class="userbox">
+      <b id="userName"></b>
+      <button data-theme-btn class="ghost" type="button">Dark mode</button>
+      <button data-logout class="ghost" type="button">Log out</button>
+    </div>
+  </aside>
+
+  <div class="content">
+    <header class="head"><h1 id="viewTitle">Overview</h1><p id="greeting"></p></header>
+
+    <section class="view" id="v-overview">
+      <p class="quote" id="quote">Loading today's motivation...</p>
+      <section class="stats" aria-label="Summary">
+        <div><b id="stPending">0</b><span>Pending</span></div>
+        <div><b id="stDone">0</b><span>Completed</span></div>
+        <div><b id="stOverdue">0</b><span>Overdue</span></div>
+        <div><b id="stMinutes">0</b><span>Minutes studied today</span></div>
+      </section>
+      <div class="grid2">
+        <section class="card">
+          <h2>Daily goal</h2>
+          <div class="track"><i id="goalBar"></i></div>
+          <p class="meta" id="goalText"></p>
+          <p class="streak"><b id="streak">0</b> day study streak</p>
+        </section>
+        <section class="card">
+          <h2>Due soon</h2>
+          <ul id="dueSoon" class="plain"></ul>
+        </section>
+      </div>
+    </section>
+
+    <section class="view" id="v-tasks">
+      <section class="card">
+        <form id="taskForm" novalidate>
+          <input id="title" placeholder="What do you need to do? (press N to jump here)" aria-label="Task title">
+          <div class="row">
+            <input id="subject" placeholder="Subject (e.g. JavaScript)" aria-label="Subject">
+            <input id="due" type="date" aria-label="Due date">
+            <select id="priority" aria-label="Priority"><option value="1">High</option><option value="2" selected>Medium</option><option value="3">Low</option></select>
+            <button type="submit">Add task</button>
+          </div>
+          <p class="error" id="formError" role="alert"></p>
+        </form>
+        <div class="row filters">
+          <input id="search" type="search" placeholder="Search tasks" aria-label="Search tasks">
+          <select id="filter" aria-label="Filter tasks"><option value="all">All</option><option value="pending">Pending</option><option value="done">Completed</option><option value="overdue">Overdue</option></select>
+          <select id="sort" aria-label="Sort tasks"><option value="due">Sort by due date</option><option value="priority">Sort by priority</option><option value="newest">Newest first</option></select>
+        </div>
+        <ul id="taskList" class="plain"></ul>
+        <button id="clearDone" class="ghost" type="button">Clear completed</button>
+      </section>
+    </section>
+
+    <section class="view" id="v-focus">
+      <div class="grid">
+        <section class="card timer">
+          <h2>Study timer</h2>
+          <div class="ring" id="ring"><div class="time" id="time">25:00</div><div class="mode" id="mode">Focus</div></div>
+          <select id="timerSubject" aria-label="Subject for this session"></select>
+          <div class="row"><button id="startBtn" type="button">Start</button><button id="resetBtn" class="ghost" type="button">Reset</button></div>
+          <div class="row small">
+            <label>Focus <input id="focusLen" type="number" min="1" max="120" value="25"> min</label>
+            <label>Break <input id="breakLen" type="number" min="1" max="60" value="5"> min</label>
+          </div>
+        </section>
+        <section class="card"><h2>Today's sessions</h2><ul id="sessions" class="plain"></ul></section>
+      </div>
+    </section>
+
+    <section class="view" id="v-notes">
+      <section class="card">
+        <form id="noteForm" novalidate>
+          <textarea id="noteText" rows="3" placeholder="Formulas, ideas, reminders..." aria-label="New note"></textarea>
+          <div class="row"><button type="submit">Save note</button></div>
+          <p class="error" id="noteError" role="alert"></p>
+        </form>
+        <ul id="noteList" class="plain"></ul>
+      </section>
+    </section>
+
+    <section class="view" id="v-reports">
+      <div class="grid2">
+        <section class="card"><h2>Last 7 days</h2><p class="meta" id="weekTotal"></p><div class="week" id="week"></div></section>
+        <section class="card"><h2>Time by subject (30 days)</h2><div id="subjectBars"></div></section>
+      </div>
+      <section class="card" style="margin-top:20px">
+        <h2>Export your data</h2>
+        <div class="row"><button id="exportCsv" type="button">Tasks as CSV</button><button id="exportJson" class="ghost" type="button">Everything as JSON</button></div>
+      </section>
+    </section>
+
+    <section class="view" id="v-settings">
+      <div class="grid2">
+        <section class="card">
+          <h2>Profile</h2>
+          <form id="profileForm" class="stack" novalidate>
+            <label>Name<input id="pName" autocomplete="name"></label>
+            <label>Daily study goal (minutes)<input id="pGoal" type="number" min="5" max="720"></label>
+            <button type="submit">Save profile</button><p class="error" id="setError" role="alert"></p>
+          </form>
+        </section>
+        <section class="card">
+          <h2>Change password</h2>
+          <form id="pwForm" class="stack" novalidate>
+            <label>Current password<input id="pwOld" type="password" autocomplete="current-password"></label>
+            <label>New password<input id="pwNew" type="password" autocomplete="new-password"></label>
+            <button type="submit">Update password</button><p class="error" id="pwError" role="alert"></p>
+          </form>
+        </section>
+      </div>
+      <section class="card" style="margin-top:20px">
+        <h2>Appearance and session</h2>
+        <div class="row"><button data-theme-btn class="ghost" type="button">Dark mode</button><button data-logout class="ghost" type="button">Log out</button></div>
+      </section>
+      <section class="card danger" style="margin-top:20px">
+        <h2>Delete account</h2>
+        <p class="meta">Permanently removes your account, tasks, sessions and notes.</p>
+        <button id="deleteAcct" type="button">Delete my account</button>
+      </section>
+    </section>
+  </div>
+
+  <dialog id="editDlg">
+    <form id="editForm" novalidate>
+      <h2>Edit task</h2>
+      <input id="eTitle" aria-label="Title">
+      <input id="eSubject" aria-label="Subject">
+      <input id="eDue" type="date" aria-label="Due date">
+      <select id="ePriority" aria-label="Priority"><option value="1">High</option><option value="2">Medium</option><option value="3">Low</option></select>
+      <p class="error" id="eError" role="alert"></p>
+      <div class="row"><button type="submit">Save</button><button id="editCancel" class="ghost" type="button">Cancel</button></div>
+    </form>
+  </dialog>
+  <div id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>

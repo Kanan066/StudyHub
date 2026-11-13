@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudyHub - Organise your tasks and study time</title>
+  <meta name="description" content="StudyHub helps students manage tasks, deadlines, focus sessions and notes in one simple app.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="landing.css">
+  <script>document.documentElement.dataset.theme = localStorage.getItem("studyhub-theme") || "light";</script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="nav">
+      <a href="#" class="logo">StudyHub</a>
+      <nav>
+        <a href="#features" class="hide-sm">Features</a>
+        <a href="#how" class="hide-sm">How it works</a>
+        <a href="#faq" class="hide-sm">FAQ</a>
+        <a href="login.html" class="btn alt" data-auth="Open dashboard">Log in</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="tag">Built for students</p>
+        <h1 class="big">Study smarter.<br>Miss fewer deadlines.</h1>
+        <p class="lead">One calm place for your tasks, focus timer, weekly progress and notes. No clutter, just what you need to get through the semester.</p>
+        <div class="row">
+          <a href="login.html#register" class="btn" data-auth="Open dashboard">Get started free</a>
+          <a href="#features" class="btn alt">See features</a>
+        </div>
+      </div>
+      <div class="mock" aria-hidden="true">
+        <div class="mring"><b>25:00</b><span>Focus</span></div>
+        <div class="mtask"><i class="pri pri-1"></i>Revise DOM events <small>Today</small></div>
+        <div class="mtask"><i class="pri pri-2"></i>Finish JS mini project <small>Fri</small></div>
+        <div class="mtask done"><i class="pri pri-3"></i>Read Express notes <small>Done</small></div>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2 class="sec">Everything a student needs</h2>
+      <div class="feats">
+        <article class="card"><h3>Task manager</h3><p>Add tasks with subjects, due dates and priorities. Search, filter and sort to see what matters now.</p></article>
+        <article class="card"><h3>Overdue alerts</h3><p>Late work is flagged automatically, so nothing slips past you.</p></article>
+        <article class="card"><h3>Focus timer</h3><p>Pomodoro-style sessions with breaks. Each finished session is logged against a subject.</p></article>
+        <article class="card"><h3>Weekly report</h3><p>See how many minutes you studied each day this week at a glance.</p></article>
+        <article class="card"><h3>Quick notes</h3><p>Save formulas, ideas and reminders next to your tasks.</p></article>
+        <article class="card"><h3>Private and synced</h3><p>Your own account with secure login. Your data is saved in the cloud, not just one browser.</p></article>
+        <article class="card"><h3>Daily goals and streaks</h3><p>Set a study goal, watch the progress bar fill and keep your streak alive.</p></article>
+        <article class="card"><h3>Subject reports</h3><p>See where your time goes across subjects and export your data anytime.</p></article>
+      </div>
+    </section>
+
+    <section id="how">
+      <h2 class="sec">How it works</h2>
+      <ol class="steps">
+        <li><b>1</b><div><h3>Create your account</h3><p>Sign up in a few seconds with your email.</p></div></li>
+        <li><b>2</b><div><h3>Add what you need to do</h3><p>List your tasks by subject and deadline.</p></div></li>
+        <li><b>3</b><div><h3>Focus and track</h3><p>Run the timer, tick things off and watch your week fill up.</p></div></li>
+      </ol>
+    </section>
+
+    <section id="faq">
+      <h2 class="sec">Questions</h2>
+      <div class="faq">
+        <details><summary>Is StudyHub free?</summary><p>Yes. It is a student project, free to use.</p></details>
+        <details><summary>Can I use it on my phone?</summary><p>Yes. The layout adapts to phones, tablets and laptops.</p></details>
+        <details><summary>Is my data private?</summary><p>Passwords are hashed and every task, note and session is tied to your account only.</p></details>
+        <details><summary>Does it have dark mode?</summary><p>Yes, switch it from the dashboard. Your choice is remembered.</p></details>
+      </div>
+    </section>
+
+    <section class="cta">
+      <h2>Ready to get organised?</h2>
+      <a href="login.html#register" class="btn" data-auth="Open dashboard">Create your free account</a>
+    </section>
+    <footer class="foot">StudyHub &middot; Built with HTML, CSS, JavaScript, Node, Express and MongoDB</footer>
+  </div>
+  <script>
+    if (localStorage.getItem("studyhub-token")) document.querySelectorAll("[data-auth]").forEach((a) => { a.textContent = a.dataset.auth; a.href = "app.html"; });
+  </script>
+</body>
+</html>
